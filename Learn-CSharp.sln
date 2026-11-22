@@ -1,0 +1,87 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37710.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01-HelloWorld", "src\01-HelloWorld\01-HelloWorld.csproj", "{74A5C58D-6238-8192-BC1F-38436AD1B714}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C8D5274F-AC00-46C7-1F8D-E88E81087A52}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "개념 모음", "개념 모음", "{3CE8A8EC-3487-44F2-996B-C68DB6B19A5B}"
+	ProjectSection(SolutionItems) = preProject
+		docs\개념 모음\CSharp 코드 구조적 구성 요소 학습.md = docs\개념 모음\CSharp 코드 구조적 구성 요소 학습.md
+		docs\개념 모음\Git 개념 문서.md = docs\개념 모음\Git 개념 문서.md
+		docs\개념 모음\GitHub 개념 문서.md = docs\개념 모음\GitHub 개념 문서.md
+		docs\개념 모음\IDE 개념 문서.md = docs\개념 모음\IDE 개념 문서.md
+		docs\개념 모음\MIT 개념 문서.md = docs\개념 모음\MIT 개념 문서.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "문제 해결 모음", "문제 해결 모음", "{2941D0EC-BDB0-498E-9FE5-8FC47D566478}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "방법 모음", "방법 모음", "{58527E44-2A38-4A2C-BD9B-2870844AF3BA}"
+	ProjectSection(SolutionItems) = preProject
+		docs\방법 모음\TIL 작성 가이드.md = docs\방법 모음\TIL 작성 가이드.md
+		docs\방법 모음\Unity와 Cursor AI 연동 가이드.md = docs\방법 모음\Unity와 Cursor AI 연동 가이드.md
+		docs\방법 모음\마크다운 작성 가이드.md = docs\방법 모음\마크다운 작성 가이드.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "템플릿 모음", "템플릿 모음", "{9E1C3F1C-1292-41E3-A20B-22684C145859}"
+	ProjectSection(SolutionItems) = preProject
+		docs\템플릿 모음\개념 문서 템플릿.md = docs\템플릿 모음\개념 문서 템플릿.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "학습 일지 모음", "학습 일지 모음", "{9B609BDE-C0C7-417F-8358-1B5AC2022B23}"
+	ProjectSection(SolutionItems) = preProject
+		docs\학습 일지 모음\L261117.md = docs\학습 일지 모음\L261117.md
+		docs\학습 일지 모음\L261118.md = docs\학습 일지 모음\L261118.md
+		docs\학습 일지 모음\L261119.md = docs\학습 일지 모음\L261119.md
+		docs\학습 일지 모음\L261120.md = docs\학습 일지 모음\L261120.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{38986AA0-DE8F-459A-B509-DD0E95AF5461}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CD80913C-F836-40AB-A2F0-D7E490533350}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{5FDFA13C-7E36-4C7E-8037-329124D64B84}"
+	ProjectSection(SolutionItems) = preProject
+		assets\1_프로그램의 흐름.zip = assets\1_프로그램의 흐름.zip
+		assets\2_입문웹교재.zip = assets\2_입문웹교재.zip
+		assets\3_알아두면 유용한 기타 문법.zip = assets\3_알아두면 유용한 기타 문법.zip
+		assets\4_GitHub_README_작성입문.zip = assets\4_GitHub_README_작성입문.zip
+		assets\csharp-book-main.zip = assets\csharp-book-main.zip
+		assets\Project_Template.zip = assets\Project_Template.zip
+		assets\README.md = assets\README.md
+		assets\UpgradeLoop.cs = assets\UpgradeLoop.cs
+		assets\게임기획html.html = assets\게임기획html.html
+		assets\메모리_스택과힙.zip = assets\메모리_스택과힙.zip
+		assets\시스템문서html.html = assets\시스템문서html.html
+		assets\실습가이드.html = assets\실습가이드.html
+		assets\초급용웹교재.zip = assets\초급용웹교재.zip
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{74A5C58D-6238-8192-BC1F-38436AD1B714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74A5C58D-6238-8192-BC1F-38436AD1B714}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74A5C58D-6238-8192-BC1F-38436AD1B714}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74A5C58D-6238-8192-BC1F-38436AD1B714}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{74A5C58D-6238-8192-BC1F-38436AD1B714} = {38986AA0-DE8F-459A-B509-DD0E95AF5461}
+		{3CE8A8EC-3487-44F2-996B-C68DB6B19A5B} = {C8D5274F-AC00-46C7-1F8D-E88E81087A52}
+		{2941D0EC-BDB0-498E-9FE5-8FC47D566478} = {C8D5274F-AC00-46C7-1F8D-E88E81087A52}
+		{58527E44-2A38-4A2C-BD9B-2870844AF3BA} = {C8D5274F-AC00-46C7-1F8D-E88E81087A52}
+		{9E1C3F1C-1292-41E3-A20B-22684C145859} = {C8D5274F-AC00-46C7-1F8D-E88E81087A52}
+		{9B609BDE-C0C7-417F-8358-1B5AC2022B23} = {C8D5274F-AC00-46C7-1F8D-E88E81087A52}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F08664F-7B81-456D-8032-DADCF5AFF2A0}
+	EndGlobalSection
+EndGlobal
