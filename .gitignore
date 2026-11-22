@@ -1,2 +1,11 @@
-[Bb]in/
-[Oo]bj/
+# .NET 빌드 산출물
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
