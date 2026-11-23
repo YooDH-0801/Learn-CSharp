@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#dc2626"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 10 5 L 0 8.5 z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <!-- 배경 -->
+  <rect x="0" y="0" width="900" height="540" fill="#f6f8fc"/>
+
+  <!-- B1: while (running) 검사 (amber) -->
+  <g id="B1">
+    <rect x="140" y="30" width="320" height="56" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+    <path d="M 152 30 H 144 A 4 4 0 0 0 140 34 V 82 A 4 4 0 0 0 144 86 H 152 Z" fill="#d97706"/>
+    <text x="170" y="64" font-family="sans-serif" font-size="16" font-weight="600" fill="#92400e">while (running) 검사</text>
+  </g>
+
+  <!-- B2: ① Render — 화면 출력 (blue) -->
+  <g id="B2">
+    <rect x="140" y="130" width="320" height="56" rx="12" fill="#dbeafe" stroke="#3b82f6" stroke-width="1"/>
+    <path d="M 152 130 H 144 A 4 4 0 0 0 140 134 V 182 A 4 4 0 0 0 144 186 H 152 Z" fill="#2563eb"/>
+    <text x="170" y="164" font-family="sans-serif" font-size="16" font-weight="600" fill="#1e40af">① Render — 화면 출력</text>
+  </g>
+
+  <!-- B3: ② 종료 조건 검사 (red) -->
+  <g id="B3">
+    <rect x="140" y="230" width="320" height="56" rx="12" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+    <path d="M 152 230 H 144 A 4 4 0 0 0 140 234 V 282 A 4 4 0 0 0 144 286 H 152 Z" fill="#dc2626"/>
+    <text x="170" y="264" font-family="sans-serif" font-size="16" font-weight="600" fill="#991b1b">② 종료 조건 검사</text>
+  </g>
+
+  <!-- Exit: 승리/파산 메시지 출력 후 break (red) -->
+  <g id="Exit">
+    <rect x="540" y="230" width="310" height="56" rx="12" fill="#fee2e2" stroke="#ef4444" stroke-width="1"/>
+    <path d="M 552 230 H 544 A 4 4 0 0 0 540 234 V 282 A 4 4 0 0 0 544 286 H 552 Z" fill="#dc2626"/>
+    <text x="568" y="264" font-family="sans-serif" font-size="16" font-weight="600" fill="#991b1b">승리/파산 메시지 출력 후 break</text>
+  </g>
+
+  <!-- B4: ③ Input — 메뉴 입력 (purple) -->
+  <g id="B4">
+    <rect x="140" y="340" width="320" height="56" rx="12" fill="#f3e8ff" stroke="#a855f7" stroke-width="1"/>
+    <path d="M 152 340 H 144 A 4 4 0 0 0 140 344 V 392 A 4 4 0 0 0 144 396 H 152 Z" fill="#9333ea"/>
+    <text x="170" y="374" font-family="sans-serif" font-size="16" font-weight="600" fill="#6b21a8">③ Input — 메뉴 입력</text>
+  </g>
+
+  <!-- B5: ④ Update — 조건문 분기 (green) -->
+  <g id="B5">
+    <rect x="140" y="440" width="320" height="56" rx="12" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+    <path d="M 152 440 H 144 A 4 4 0 0 0 140 444 V 492 A 4 4 0 0 0 144 496 H 152 Z" fill="#16a34a"/>
+    <text x="170" y="474" font-family="sans-serif" font-size="16" font-weight="600" fill="#166534">④ Update — 조건문 분기</text>
+  </g>
+
+  <!-- 간선 6개 -->
+  <!-- 1. B1 -> B2 -->
+  <path d="M 300 86 V 126" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 2. B2 -> B3 -->
+  <path d="M 300 186 V 226" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 3. B3 -> Exit (조건: 종료 조건 충족) -->
+  <path d="M 460 258 H 536" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="500" y="248" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="500" fill="#dc2626">Yes (종료)</text>
+
+  <!-- 4. B3 -> B4 (조건: 계속 진행) -->
+  <path d="M 300 286 V 336" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="312" y="317" font-family="sans-serif" font-size="13" font-weight="500" fill="#475569">No (계속)</text>
+
+  <!-- 5. B4 -> B5 -->
+  <path d="M 300 396 V 436" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 6. B5 -> B1 (루프 반복) -->
+  <path d="M 140 468 H 80 V 58 H 136" fill="none" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="70" y="263" text-anchor="end" font-family="sans-serif" font-size="13" font-weight="500" fill="#16a34a">다음 턴</text>
+</svg>
