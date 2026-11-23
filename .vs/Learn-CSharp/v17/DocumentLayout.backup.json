@@ -1,10 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\My Repositories\\Learn-CSharp\\",
+  "WorkspaceRootPath": "C:\\Yoodh\\Learn-CSharp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{74A5C58D-6238-8192-BC1F-38436AD1B714}|src\\01-HelloWorld\\01-HelloWorld.csproj|c:\\my repositories\\learn-csharp\\src\\01-helloworld\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{74A5C58D-6238-8192-BC1F-38436AD1B714}|src\\01-HelloWorld\\01-HelloWorld.csproj|solutionrelative:src\\01-helloworld\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Yoodh\\Learn-CSharp\\src\\Note\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Note\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Yoodh\\Learn-CSharp\\Note\\Game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Note\\Game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -20,14 +24,28 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\My Repositories\\Learn-CSharp\\src\\01-HelloWorld\\Program.cs",
-              "RelativeDocumentMoniker": "src\\01-HelloWorld\\Program.cs",
-              "ToolTip": "C:\\My Repositories\\Learn-CSharp\\src\\01-HelloWorld\\Program.cs",
-              "RelativeToolTip": "src\\01-HelloWorld\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "DocumentMoniker": "C:\\Yoodh\\Learn-CSharp\\src\\Note\\Program.cs",
+              "RelativeDocumentMoniker": "src\\Note\\Program.cs",
+              "ToolTip": "C:\\Yoodh\\Learn-CSharp\\src\\Note\\Program.cs",
+              "RelativeToolTip": "src\\Note\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-22T05:11:39.971Z",
+              "WhenOpened": "2026-11-23T08:14:04.392Z",
+              "IsPinned": true,
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Game.cs",
+              "DocumentMoniker": "C:\\Yoodh\\Learn-CSharp\\Note\\Game.cs",
+              "RelativeDocumentMoniker": "Note\\Game.cs",
+              "ToolTip": "C:\\Yoodh\\Learn-CSharp\\Note\\Game.cs",
+              "RelativeToolTip": "Note\\Game.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAswGMAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-23T08:26:12.753Z",
+              "IsPinned": true
             }
           ]
         }
