@@ -7,9 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Program.cs" />
-    <Compile Remove="클래스.cs" />
-  </ItemGroup>
-
 </Project>
