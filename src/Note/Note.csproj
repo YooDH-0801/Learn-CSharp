@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="page.cs" />
+    <Compile Remove="클래스와 객체.cs" />
+  </ItemGroup>
+
 </Project>
