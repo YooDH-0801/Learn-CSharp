@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TFT 시즌 18 - Enchanted Wilds</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#10151b;color:#f4eddb;font-family:Arial,sans-serif}
+header{text-align:center;padding:20px;background:linear-gradient(120deg,#142d28,#34254c)}
+h1{margin:5px;color:#d9f5c1}
+.sub{color:#b9c6ae;font-size:13px}
+main{max-width:1050px;margin:auto;padding:15px}
+.stats{display:flex;justify-content:space-around;gap:8px;flex-wrap:wrap;background:#202a30;padding:14px;border-radius:12px;margin-bottom:15px}
+.stat{font-weight:bold;color:#f4d58b}
+.panel{background:#1c272d;border:1px solid #42554c;border-radius:12px;padding:15px;margin-bottom:15px}
+h2{font-size:17px;color:#d7e9c6;margin:0 0 12px}
+.board{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;background:#243b36;padding:8px;border-radius:10px}
+.cell{aspect-ratio:1;background:linear-gradient(145deg,#35564a,#263e36);border:1px solid #66816b;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;position:relative;min-width:0}
+.cell.enemy{background:linear-gradient(145deg,#493a43,#322d3d)}
+.cell.selected{outline:3px solid #f3d16e}
+.unit{font-size:clamp(17px,4vw,31px)}
+.unitname{font-size:10px;overflow:hidden;max-width:100%;white-space:nowrap}
+.stars{color:#f5d36a;font-size:11px}
+.cost{position:absolute;bottom:2px;right:4px;font-size:9px;color:#ffe5a0}
+.shop,.bench{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.card{background:#303b40;border:1px solid #64756a;border-radius:9px;padding:10px 4px;text-align:center;cursor:pointer;min-width:0}
+.card:hover{border-color:#f3d16e}
+.card .unit{font-size:28px}
+.card strong{display:block;font-size:12px;margin:5px 0}
+.card small{font-size:10px;color:#c6d4c5}
+button{background:#526e52;color:white;border:0;border-radius:7px;padding:10px 13px;cursor:pointer;font-weight:bold}
+button:hover{background:#71936c}
+button:disabled{opacity:.35;cursor:not-allowed}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.traits{display:flex;flex-wrap:wrap;gap:8px}
+.trait{background:#35433d;padding:8px 12px;border-radius:8px;font-size:12px}
+.log{height:110px;overflow:auto;font-size:12px;line-height:1.8;color:#c7d1c5}
+.active{color:#e8cb70;border:1px solid #e8cb70}
+footer{text-align:center;color:#87958d;padding:20px;font-size:11px}
+@media(max-width:520px){main{padding:8px}.panel{padding:10px}.shop,.bench{gap:4px}.card{padding:7px 2px}.unitname{font-size:9px}}
+</style>
+</head>
+<body>
+<header>
+<h1>🌲 ENCHANTED WILDS</h1>
+<div>TEAMFIGHT TACTICS · SET 18</div>
+<div class="sub">마법의 숲에서 최강의 조합을 완성하세요</div>
+</header>
+<main>
+<div class="stats">
+<div class="stat">💰 골드 <span id="gold">10</span></div>
+<div class="stat">⭐ 레벨 <span id="level">3</span></div>
+<div class="stat">XP <span id="xp">0</span>/6</div>
+<div class="stat">❤️ 체력 <span id="hp">100</span></div>
+<div class="stat">⚔️ 라운드 <span id="round">1-1</span></div>
+</div>
+
+<section class="panel">
+<h2>⚔️ 전장 · 아군 배치</h2>
+<div id="board" class="board"></div>
+<p class="sub">아군 칸을 선택한 뒤 빈 칸을 선택하면 이동합니다. 적 진영은 전투 시 표시됩니다.</p>
+</section>
+
+<section class="panel">
+<h2>🪑 대기석</h2>
+<div id="bench" class="bench"></div>
+</section>
+
+<section class="panel">
+<h2>🛒 챔피언 상점</h2>
+<div id="shop" class="shop"></div>
+<div class="controls" style="margin-top:12px">
+<button onclick="reroll()">🔄 새로고침 (2G)</button>
+<button onclick="buyXP()">⭐ 경험치 구매 (4G)</button>
+<button onclick="battle()">⚔️ 전투 시작</button>
+</div>
+</section>
+
+<section class="panel">
+<h2>🌿 활성 특성 시너지</h2>
+<div id="traits" class="traits"></div>
+</section>
+
+<section class="panel">
+<h2>📜 전투 기록</h2>
+<div id="log" class="log">숲의 모험이 시작되었습니다. 챔피언을 구매해 보세요.</div>
+</section>
+
+<section class="panel">
+<h2>🎒 아이템</h2>
+<div id="items" class="traits">
+<div class="trait">⚔️ B.F. 대검 <button onclick="giveItem('ad')">장착</button></div>
+<div class="trait">🏹 곡궁 <button onclick="giveItem('as')">장착</button></div>
+<div class="trait">🪄 쓸데없이 큰 지팡이 <button onclick="giveItem('ap')">장착</button></div>
+</div>
+</section>
+</main>
+<footer>팬 제작 게임 프로토타입 · Riot Games 공식 게임과 무관</footer>
+
+<script>
+const champions=[
+{name:"아리",emoji:"🦊",cost:2,traits:["Fae","Invoker"],power:18},
+{name:"럭스",emoji:"✨",cost:2,traits:["Elderwood","Invoker"],power:20},
+{name:"아무무",emoji:"🧸",cost:1,traits:["Elderwood","Defender"],power:12},
+{name:"이즈리얼",emoji:"🏹",cost:2,traits:["Inferno","Hunter"],power:19},
+{name:"마스터 이",emoji:"⚔️",cost:3,traits:["Riftbeast","Executioner"],power:26},
+{name:"모르가나",emoji:"🦇",cost:3,traits:["Coven","Invoker"],power:25},
+{name:"카시오페아",emoji:"🐍",cost:3,traits:["Coven","Defender"],power:24},
+{name:"드레이븐",emoji:"🪓",cost:4,traits:["Inferno","Hunter"],power:33},
+{name:"이베른",emoji:"🌳",cost:4,traits:["Elderwood","Primal"],power:31},
+{name:"애니",emoji:"🔥",cost:1,traits:["Inferno","Fae"],power:13},
+{name:"뽀삐",emoji:"🛡️",cost:1,traits:["Sprykin","Defender"],power:14},
+{name:"페블스",emoji:"🪨",cost:1,traits:["Riftbeast","Sprykin"],power:14},
+{name:"브라이어",emoji:"🐺",cost:3,traits:["Riftbeast","Executioner"],power:26},
+{name:"소라카",emoji:"🌟",cost:2,traits:["Fae","Invoker"],power:18},
+{name:"엘더 드래곤",emoji:"🐉",cost:5,traits:["Elderwood","Primal"],power:42}
+];
+let gold=10,level=3,xp=0,hp=100,round=1;
+let board=Array(28).fill(null),bench=Array(9).fill(null);
+let shop=[],selected=null,log=[];
+let items=[];
+const $=id=>document.getElementById(id);
+function randomChampion(){
+ let pool=champions.filter(c=>c.cost<=Math.min(5,Math.floor(level/2)+1));
+ return {...pool[Math.floor(Math.random()*pool.length)],star:1,items:[]};
+}
+function say(t){log.unshift(t);log=log.slice(0,35);$("log").innerHTML=log.map(x=>"• "+x).join("<br>");}
+function totalUnits(){return board.filter(Boolean).length;}
+function generateShop(){shop=Array.from({length:5},randomChampion);render();}
+function render(){
+ $("gold").textContent=gold;$("level").textContent=level;
+ $("xp").textContent=xp;$("hp").textContent=hp;
+ $("round").textContent=""+round;
+ $("board").innerHTML="";
+ board.forEach((u,i)=>{
+ let d=document.createElement("div");
+ d.className="cell"+(selected===i?" selected":"");
+ d.innerHTML=u?`<div class="unit">${u.emoji}</div><div class="unitname">${u.name}</div><div class="stars">${"★".repeat(u.star)}</div><div class="cost">${u.cost}G</div>`:"";
+ d.onclick=()=>boardClick(i);$("board").appendChild(d);
+ });
+ $("bench").innerHTML="";
+ bench.forEach((u,i)=>{
+ let d=document.createElement("div");d.className="card";
+ d.innerHTML=u?`<div class="unit">${u.emoji}</div><strong>${u.name}</strong><small>${"★".repeat(u.star)}</small>`:"<small>빈 슬롯</small>";
+ d.onclick=()=>benchClick(i);$("bench").appendChild(d);
+ });
+ $("shop").innerHTML="";
+ shop.forEach((u,i)=>{
+ let d=document.createElement("div");d.className="card";
+ d.innerHTML=`<div class="unit">${u.emoji}</div><strong>${u.name}</strong><small>${u.traits.join(" · ")}</small><br><small>${u.cost}G</small>`;
+ d.onclick=()=>buy(i);$("shop").appendChild(d);
+ });
+ renderTraits();
+}
+function boardClick(i){
+ if(selected!==null){
+  if(selected>=0&&selected<28){
+   let temp=board[i];board[i]=board[selected];board[selected]=temp;
+  }else{
+   let b=selected-28;
+   if(!board[i]){board[i]=bench[b];bench[b]=null;}
+  }
+  selected=null;
+ }else if(board[i])selected=i;
+ render();
+}
+function benchClick(i){
+ if(selected!==null&&selected<28){
+  let u=board[selected];
+  if(!bench[i]&&u){bench[i]=u;board[selected]=null;}
+  selected=null;
+ }else if(bench[i])selected=28+i;
+ render();
+}
+function buy(i){
+ let u=shop[i];if(!u)return;
+ if(gold<u.cost){say("골드가 부족합니다.");return;}
+ let slot=bench.findIndex(x=>!x);
+ if(slot<0){say("대기석이 가득 찼습니다.");return;}
+ gold-=u.cost;bench[slot]={...u,items:[]};shop[i]=null;
+ combine(u.name);say(u.name+" 구매!");
+ render();
+}
+function combine(name){
+ let all=[];
+ board.forEach((u,i)=>{if(u?.name===name)all.push({where:"board",i,u});});
+ bench.forEach((u,i)=>{if(u?.name===name)all.push({where:"bench",i,u});});
+ while(all.length>=3){
+ let chosen=all.splice(0,3);
+ chosen.forEach(x=>{if(x.where==="board")board[x.i]=null;else bench[x.i]=null;});
+ let newUnit={...chosen[0].u,star:chosen[0].u.star+1,power:chosen[0].u.power*1.8,items:chosen[0].u.items||[]};
+ let slot=bench.findIndex(x=>!x);
+ if(slot>=0)bench[slot]=newUnit;
+ else {let s=board.findIndex(x=>!x);if(s>=0)board[s]=newUnit;}
+ say("✨ "+name+" "+newUnit.star+"성 승급!");
+ all=[];
+ }
+}
+function reroll(){
+ if(gold<2){say("골드가 부족합니다.");return;}
+ gold-=2;generateShop();say("상점을 새로고침했습니다.");
+}
+function buyXP(){
+ if(gold<4){say("골드가 부족합니다.");return;}
+ gold-=4;xp+=4;
+ if(xp>=6){xp-=6;level=Math.min(10,level+1);say("레벨 업!");}
+ else say("경험치를 구매했습니다.");
+ render();
+}
+function renderTraits(){
+ let counts={};
+ board.filter(Boolean).forEach(u=>u.traits.forEach(t=>counts[t]=(counts[t]||0)+1));
+ let html="";
+ Object.entries(counts).forEach(([t,n])=>{
+  let active=n>=2;
+  html+=`<div class="trait ${active?"active":""}">${active?"✨ ":""}${t} (${n}) ${active?"활성화":"비활성"}</div>`;
+ });
+ $("traits").innerHTML=html||"챔피언을 배치하세요.";
+}
+function giveItem(type){
+ let u=board.find(Boolean)||bench.find(Boolean);
+ if(!u){say("먼저 챔피언을 구매하세요.");return;}
+ if(u.items.length>=3){say("아이템 슬롯이 가득 찼습니다.");return;}
+ u.items.push(type);
+ if(type==="ad")u.power+=10;
+ if(type==="as")u.power+=7;
+ if(type==="ap")u.power+=9;
+ say(u.name+"에게 아이템을 장착했습니다.");
+ render();
+}
+function battle(){
+ if(totalUnits()===0){say("전장에 챔피언을 배치하세요.");return;}
+ let allies=board.filter(Boolean);
+ let synergy={};
+ allies.forEach(u=>u.traits.forEach(t=>synergy[t]=(synergy[t]||0)+1));
+ let bonus=Object.values(synergy).reduce((a,n)=>a+(n>=2?8*n:0),0);
+ let power=allies.reduce((a,u)=>a+u.power*u.star,0)+bonus;
+ let enemy=35+round*13+Math.random()*35;
+ say("전투력 "+Math.floor(power)+" vs 적 전투력 "+Math.floor(enemy));
+ if(power>=enemy){
+  gold+=5+Math.floor(round/3);
+  say("🏆 승리! 골드 보상 획득.");
+ }else{
+  hp-=Math.min(20,Math.ceil((enemy-power)/3)+3);
+  say("💔 패배! 체력을 잃었습니다.");
+ }
+ if(round%3===0)gold+=3;
+ round++;
+ generateShop();
+ if(hp<=0){
+  say("게임 종료! 다시 시작하려면 새로고침하세요.");
+  hp=0;
+  $("hp").textContent=0;
+ }
+}
+generateShop();
+</script>
+</body>
+</html>

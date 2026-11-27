@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wilson's Algorithm Visualizer</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 24px;
+  background: #101827; color: #e5e7eb;
+  font-family: Arial, sans-serif;
+}
+main { max-width: 950px; margin: auto; }
+h1 { color: #67e8f9; }
+p { color: #aab6c8; }
+.panel {
+  background: #1e293b; padding: 18px;
+  border-radius: 12px; margin: 16px 0;
+}
+.controls {
+  display: flex; flex-wrap: wrap;
+  gap: 10px; align-items: center;
+}
+button, input {
+  padding: 9px 13px; border-radius: 7px;
+  border: 1px solid #475569;
+}
+button {
+  background: #0891b2; color: white;
+  cursor: pointer; border: 0;
+}
+button:hover { background: #0e7490; }
+input { background: #0f172a; color: white; width: 65px; }
+canvas {
+  display: block; width: 100%;
+  background: #0f172a; border-radius: 8px;
+}
+.stats { display: flex; gap: 24px; flex-wrap: wrap; }
+.stats span { color: #67e8f9; font-weight: bold; }
+</style>
+</head>
+<body>
+<main>
+<h1>Wilson's Algorithm</h1>
+<p>Uniform Spanning Tree 생성 알고리즘 시각화</p>
+
+<div class="panel">
+  <div class="controls">
+    <label>행 <input id="rows" type="number" value="15" min="2" max="50"></label>
+    <label>열 <input id="cols" type="number" value="20" min="2" max="50"></label>
+    <label>속도 <input id="speed" type="range" min="1" max="100" value="40"></label>
+    <button id="start">시작</button>
+    <button id="pause">일시정지</button>
+    <button id="step">한 단계</button>
+    <button id="reset">초기화</button>
+  </div>
+</div>
+
+<div class="panel">
+  <canvas id="canvas" width="800" height="600"></canvas>
+</div>
+
+<div class="panel stats">
+  <div>Tree 노드: <span id="visited">0</span></div>
+  <div>Walk 길이: <span id="walk">0</span></div>
+  <div>상태: <span id="status">대기</span></div>
+</div>
+
+<div class="panel">
+  <b>알고리즘 설명</b>
+  <p>1. 임의의 시작 노드를 Tree에 추가합니다.</p>
+  <p>2. Tree에 포함되지 않은 노드에서 Random Walk를 시작합니다.</p>
+  <p>3. 기존 경로와 만나는 Loop를 제거합니다.</p>
+  <p>4. Tree에 도달하면 경로 전체를 Tree에 추가합니다.</p>
+  <p>5. 모든 노드가 Tree에 포함될 때까지 반복합니다.</p>
+</div>
+</main>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const $ = id => document.getElementById(id);
+
+let R, C, tree, walk, current, running = false;
+let timer = null, complete = false, phase = "idle";
+let cell, walls, initialized = false;
+
+function neighbors(v) {
+  const r = Math.floor(v / C), c = v % C;
+  const a = [];
+  if (r > 0) a.push(v-C);
+  if (r < R-1) a.push(v+C);
+  if (c > 0) a.push(v-1);
+  if (c < C-1) a.push(v+1);
+  return a;
+}
+
+function init() {
+  stop();
+  R = Math.max(2, Math.min(50, +$("rows").value || 15));
+  C = Math.max(2, Math.min(50, +$("cols").value || 20));
+  tree = new Set();
+  walk = [];
+  current = null;
+  complete = false;
+  phase = "idle";
+  tree.add(Math.floor(Math.random() * R * C));
+  initialized = true;
+  draw();
+  update();
+}
+
+function startWalk() {
+  if (complete) return;
+  const remaining = [];
+  for(let i=0; i<R*C; i++)
+    if(!tree.has(i)) remaining.push(i);
+
+  if(!remaining.length) {
+    complete = true;
+    phase = "done";
+    return;
+  }
+
+  current = remaining[Math.floor(Math.random()*remaining.length)];
+  walk = [current];
+  phase = "walking";
+}
+
+function nextStep() {
+  if (complete) return;
+
+  if (phase === "idle") startWalk();
+
+  if (phase === "walking") {
+    const v = current;
+    const ns = neighbors(v);
+    current = ns[Math.floor(Math.random()*ns.length)];
+
+    const index = walk.indexOf(current);
+
+    if(index !== -1) {
+      walk = walk.slice(0, index+1);
+    } else {
+      walk.push(current);
+    }
+
+    if(tree.has(current)) {
+      for(const node of walk) tree.add(node);
+      walk = [];
+      phase = "idle";
+
+      if(tree.size === R*C) {
+        complete = true;
+        phase = "done";
+      }
+    }
+  }
+
+  draw();
+  update();
+}
+
+function draw() {
+  const dpr = window.devicePixelRatio || 1;
+  const width = canvas.clientWidth || 800;
+  const height = Math.max(300, width * R / C);
+  canvas.width = width*dpr;
+  canvas.height = height*dpr;
+  canvas.style.height = height+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  cell = Math.min(width/C, height/R);
+  const ox = (width-cell*C)/2;
+  const oy = (height-cell*R)/2;
+
+  ctx.fillStyle = "#0f172a";
+  ctx.fillRect(0,0,width,height);
+
+  for(let i=0;i<R*C;i++) {
+    const r=Math.floor(i/C), c=i%C;
+    const x=ox+c*cell, y=oy+r*cell;
+
+    if(tree.has(i)) {
+      ctx.fillStyle="#0e7490";
+      ctx.fillRect(x,y,cell,cell);
+    }
+  }
+
+  // Current random walk
+  for(const i of walk) {
+    const r=Math.floor(i/C), c=i%C;
+    ctx.fillStyle="#f59e0b";
+    ctx.fillRect(ox+c*cell+1,oy+r*cell+1,
+                 cell-2,cell-2);
+  }
+
+  // Tree root
+  const root = [...tree][0];
+  if(root !== undefined) {
+    const r=Math.floor(root/C), c=root%C;
+    ctx.fillStyle="#4ade80";
+    ctx.fillRect(ox+c*cell+2,oy+r*cell+2,
+                 cell-4,cell-4);
+  }
+
+  // Grid
+  ctx.strokeStyle="#475569";
+  ctx.lineWidth=0.7;
+  ctx.strokeRect(ox,oy,cell*C,cell*R);
+
+  for(let r=0;r<=R;r++) {
+    ctx.beginPath();
+    ctx.moveTo(ox,oy+r*cell);
+    ctx.lineTo(ox+C*cell,oy+r*cell);
+    ctx.stroke();
+  }
+  for(let c=0;c<=C;c++) {
+    ctx.beginPath();
+    ctx.moveTo(ox+c*cell,oy);
+    ctx.lineTo(ox+c*cell,oy+R*cell);
+    ctx.stroke();
+  }
+}
+
+function update() {
+  $("visited").textContent = tree?.size || 0;
+  $("walk").textContent = walk?.length || 0;
+  $("status").textContent =
+    complete ? "완료" :
+    phase==="walking" ? "Random Walk" : "대기";
+}
+
+function stop() {
+  running=false;
+  clearTimeout(timer);
+}
+
+function loop() {
+  if(!running || complete) return;
+  nextStep();
+  if(running && !complete) {
+    const delay = 101 - +$("speed").value;
+    timer=setTimeout(loop,delay);
+  } else {
+    stop();
+  }
+}
+
+$("start").onclick=()=>{
+  if(!initialized) init();
+  if(complete || running) return;
+  running=true;
+  loop();
+};
+
+$("pause").onclick=stop;
+
+$("step").onclick=()=>{
+  stop();
+  if(!initialized) init();
+  nextStep();
+};
+
+$("reset").onclick=init;
+
+window.addEventListener("resize",()=>{
+  if(initialized) draw();
+});
+
+init();
+</script>
+</body>
+</html>
